@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Download public TikTok videos quickly. Only download content you own or have permission to use.">
+  <title>TikSave — TikTok Video Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="/">
+      <span class="logo">T</span>
+      <span>TikSave</span>
+    </a>
+    <span class="badge">Free Tool</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow">FAST • SIMPLE • MOBILE FRIENDLY</div>
+      <h1>Download TikTok videos in seconds</h1>
+      <p class="subtext">Paste a public TikTok video link below and download the available video file.</p>
+
+      <form id="downloadForm" action="/download" method="post" class="download-card">
+        <label for="url">TikTok video link</label>
+        <div class="input-row">
+          <input
+            id="url"
+            name="url"
+            type="url"
+            required
+            autocomplete="off"
+            placeholder="https://www.tiktok.com/@username/video/..."
+          >
+          <button id="downloadBtn" type="submit">
+            <span class="button-text">Download</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+        {% if error %}
+          <div class="error">{{ error }}</div>
+        {% endif %}
+        <p class="hint">Works with public video links. Private or restricted videos cannot be downloaded.</p>
+      </form>
+
+      <div class="steps">
+        <article>
+          <span>1</span>
+          <h2>Copy link</h2>
+          <p>Open TikTok and copy the video link.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <h2>Paste link</h2>
+          <p>Paste it into the box above.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <h2>Download</h2>
+          <p>Tap download and save the available file.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="notice">
+      <h2>Use responsibly</h2>
+      <p>Only download videos you created, own, or have permission to use. This website is not affiliated with TikTok.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> TikSave. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById("downloadForm");
+    const button = document.getElementById("downloadBtn");
+    form.addEventListener("submit", () => {
+      button.classList.add("loading");
+      button.disabled = true;
+      button.querySelector(".button-text").textContent = "Processing...";
+      setTimeout(() => {
+        button.disabled = false;
+        button.classList.remove("loading");
+        button.querySelector(".button-text").textContent = "Download";
+      }, 30000);
+    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
